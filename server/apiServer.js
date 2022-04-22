@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const path = require('path')
 
 // * Middlewares
 const { errorHandler } = require('./middlewares')
@@ -9,6 +10,8 @@ const { logger } = require('./utils')
 
 // * Constants
 const { SERVER_NAME } = require('./types/constants')
+
+const publicPath = path.join(__dirname, '../client/build')
 
 class ApiServer {
   constructor ({ apis, settings, port }) {
@@ -57,6 +60,12 @@ class ApiServer {
 
     // * Mount generic error handler.
     app.use(errorHandler)
+
+    app.use('/', express.static(publicPath))
+    // * Always return the main index.html, so react-router renders the route in the client
+    app.get('*', (req, res) => {
+      res.sendFile(path.resolve(publicPath, 'index.html'))
+    })
 
     // * listen to requests on PORT
     app.listen(port, () => logger.info(`${SERVER_NAME} started, listening at port ${port}`))
