@@ -1,0 +1,67 @@
+{
+	"collection_name": "Lazy Loop Cat",
+	"collection_lower": "lazy loop cat",
+	"description": "Lazy Loop Cat Description",
+	"artist_name": "jelohipolitocruz@gmail.com",
+	"thumbnails": true,
+	"animation": true,
+	"royalty_percentage": 1,
+	"background_color": true,
+	"royalty_address": "0x0000000000000000",
+	"seed": "Test",
+	"image_layers": [
+		{
+			"layer_name": "TestBG",
+			"variations": 1,
+			"size": [
+				200,
+				null
+			],
+			"rgba": {
+				"TestBG1": [
+					181,
+					24,
+					24,
+					1
+				]
+			},
+			"weights": [
+				3
+			]
+		},
+		{
+			"layer_name": "Head",
+			"variations": 1,
+			"filenames": {
+				"Head1": "Test"
+			},
+			"weights": [
+				2
+			]
+		},
+		{
+			"layer_name": "Torso",
+			"variations": 1,
+			"filenames": {
+				"Torso1": "Test"
+			},
+			"weights": [
+				2
+			]
+		},
+		{
+			"layer_name": "Feet",
+			"variations": 1,
+			"filenames": {
+				"Feet1": "Test"
+			},
+			"weights": [
+				3
+			]
+		}
+	],
+	"thumbnail_size": [
+		200,
+		null
+	]
+}

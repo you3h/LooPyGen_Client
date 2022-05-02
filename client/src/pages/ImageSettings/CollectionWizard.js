@@ -71,12 +71,12 @@ const CollectionWizard = () => {
   const onDone = async () => {
     try {
       loader.show()
-      const res = await apiClient.generateImageMetadata(finalValues)
-      message.success('Image Metadata created')
+      const res = await apiClient.generateImageTraits(finalValues)
+      message.success('Image traits created')
       return res
     } catch (err) {
       console.log(err)
-      message.error('Something went wrong while creating metadata')
+      message.error('Something went wrong while creating traits')
     } finally {
       loader.hide()
     }
@@ -97,7 +97,7 @@ const CollectionWizard = () => {
         <ButtonContainer visib={true}>
         {
           currentStep === steps().length - 1 
-          ? <Button type='primary' onClick={onDone} icon={<SendOutlined />}>Create Metadata</Button>
+          ? <Button type='primary' onClick={onDone} icon={<SendOutlined />}>Create Traits JSON file</Button>
           : <Button type='primary' onClick={onNext} icon={<ArrowRightOutlined />}>Next</Button>
         }
         </ButtonContainer>

@@ -110,13 +110,13 @@ class ImageService {
           : undefined
     }
 
-    fs.writeFile('../common/metadata.json', JSON.stringify(parsedBody), 'utf8', (err) => {
+    fs.writeFile('../common/traits.json', JSON.stringify(parsedBody, null, "\t"), 'utf8', (err) => {
       if (err) {
           logger.error('An error occured while writing JSON Object to File.');
           throw new BadRequestError()
       }
     });
-    logger.info(`${SERVICE_NAME}: Metadata.json created`)
+    logger.info(`${SERVICE_NAME}: traits.json created`)
     return 'Successfully created a json config'
   }
 

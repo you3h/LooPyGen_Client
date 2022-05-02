@@ -8,7 +8,7 @@ class APIManager {
     this.imageClient = axios.create({ baseURL: IMAGE_SERVER_URL })
   }
 
-  async generateImageMetadata (data) {
+  async generateImageTraits (data) {
     const res = await this.imageClient.post('/config/generate', data)
     return res.data
   }

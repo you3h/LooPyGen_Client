@@ -36,31 +36,51 @@ const CollectionDescription = ({ values }) => {
 const BackgroundLayers = ({ savedColor, changeColor }) => {
   return (
   <>
-    <Divider>Setup Background Color</Divider>
+    <Divider>Setup Background Colors</Divider>
     <Form.List name='backgrounds'>
       {(fields, { add, remove, move }) => (
           <>
             {fields.map(({ key, name, ...restField }, idx) => (
-              <Space key={key} style={{ display: 'flex', flexWrap: 'wrap', marginBottom: 8, justifyContent: 'space-between' }} align='baseline'>
-                <Item {...restField} name={[name, 'name']} label='Name' rules={[{ required: true }]}>
-                  <Input placeholder={`Background name ${idx + 1}`} />
-                </Item>
-                <Item {...restField} name={[name, 'rarity']} label='Rarity' rules={[{ required: true }]}>
-                  <Select placeholder='Select rarity'>
-                    <Option value='4'>Common</Option>
-                    <Option value='3'>Uncommon</Option>
-                    <Option value='2'>Rare</Option>
-                    <Option value='1'>Legendary</Option>                        
-                  </Select>
-                </Item>
-                <Item {...restField} name={[name, 'color']} label='Color' rules={[{ required: true }]}>
-                  <PopoverColorPicker color={savedColor[idx]} onChange={(color) => changeColor(color, idx)} />
-                </Item>
-                <DeleteOutlined onClick={() => {
-                  delete savedColor[idx]
-                  remove(name)
-                }} />
-              </Space>
+              <>
+              <Divider>Color #{idx + 1}</Divider>
+                <Space key={key} style={{ display: 'flex', flexWrap: 'wrap', marginBottom: 8, justifyContent: 'space-between' }} align='baseline'>
+                  <Item 
+                    {...restField} 
+                    name={[name, 'name']} 
+                    label='Name' 
+                    rules={[{ required: true }]}
+                    tooltip={<span>Display Name: The pretty name of this variation</span>}
+                  >
+                    <Input placeholder='Color Display Name' />
+                  </Item>
+                  <Item 
+                    {...restField} 
+                    name={[name, 'rarity']} 
+                    label='Rarity' 
+                    rules={[{ required: true }]}
+                    tooltip={<span>Rarity: How rare this variation is</span>}
+                  >
+                    <Select placeholder='Select rarity' style={{ minWidth: '115px' }}>
+                      <Option value='4'>Common</Option>
+                      <Option value='3'>Uncommon</Option>
+                      <Option value='2'>Rare</Option>
+                      <Option value='1'>Legendary</Option>                        
+                    </Select>
+                  </Item>
+                  <Item 
+                    {...restField} 
+                    name={[name, 'color']} 
+                    label='Color' rules={[{ required: true }]}
+                    tooltip={<span>Color: The fill color of this background variation</span>}
+                  >
+                    <PopoverColorPicker color={savedColor[idx]} onChange={(color) => changeColor(color, idx)} />
+                  </Item>
+                  <DeleteOutlined onClick={() => {
+                    delete savedColor[idx]
+                    remove(name)
+                  }} />
+                </Space>
+              </>
             ))}
             <Item>
               <Button type='dashed' onClick={() => add()} block icon={<PlusOutlined />}>
@@ -82,14 +102,22 @@ const InitTraits = ({ traits, traitNames, setTraitNames }) => {
   for (let x = 0; x < traits; x++) {
     traitsComponent.push(
       <div key={x}>
-        <Divider style={{ fontSize: '12px' }}>{traitNames && traitNames[x] ? `Trait - ${traitNames[x]}` : ''}</Divider>
-        <Item name={['traits', `trait-${x}`]} label='Name' rules={[{ required: true, message: 'Trait name is required' }]}>
-          <Input placeholder={`Trait name ${x + 1}`} onChange={(e) => {
-            setTraitNames({
-              ...traitNames,
-              [x]: e.target.value
-            })
-          }} />
+        <Divider style={{ fontSize: '12px' }}>{traitNames && traitNames[x] ? `Setup - Trait ${traitNames[x]}` : ''}</Divider>
+        <Item 
+          name={['traits', `trait-${x}`]} 
+          label='Name' 
+          rules={[{ required: true, message: 'Trait name is required' }]}
+          tooltip={<span>Display Name: The pretty name of this trait/layer</span>}
+        >
+          <Input 
+            placeholder={`Trait #${x + 1} Display name`} 
+            onChange={(e) => {
+              setTraitNames({
+                ...traitNames,
+                [x]: e.target.value
+              })
+            }} 
+          />
         </Item>
         <Variants 
           traitId={x} 
@@ -108,25 +136,46 @@ const Variants = ({ traitId, traitNames = {} }) => {
       {(fields, { add, remove }) => (
         <>
           {fields.map(({ key, name, ...restField }, idx) => (
-              <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align='baseline'>
-                <DeleteOutlined onClick={() => remove(name)} />
-                <Item {...restField} name={[name, 'name']} label='Variant Name' rules={[{ required: true, message: 'Variant name is required' }]}>
-                  <Input placeholder='Variant Name' />
+            <>
+              <Divider>Variation #{idx + 1} {traitNames[traitId] ? `of ${traitNames[traitId]}` : '' }</Divider>
+              <Space key={key} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }} align='baseline'>
+                <Item 
+                  {...restField} 
+                  name={[name, 'name']} 
+                  label='Variant Name' rules={[{ required: true, message: 'Variant name is required' }]}
+                  tooltip={<span>Display Name: The pretty name of this variation</span>}
+                >
+                  <Input 
+                    placeholder={`Variation # ${idx + 1}`}
+                  />
                 </Item>
-                <Item {...restField} name={[name, 'rarity']} label='Rarity' rules={[{ required: true, message: 'Rarity is required' }]}>
-                  <Select placeholder='Select rarity'>
+                <Item 
+                  {...restField} 
+                  name={[name, 'rarity']} 
+                  label='Rarity' 
+                  rules={[{ required: true, message: 'Rarity is required' }]}
+                  tooltip={<span>Rarity: How rare this variation is</span>}
+                >
+                  <Select placeholder='Select rarity' style={{ minWidth: '115px' }}>
                     <Option value='4'>Common</Option>
                     <Option value='3'>Uncommon</Option>
                     <Option value='2'>Rare</Option>
                     <Option value='1'>Legendary</Option>                        
                   </Select>
                 </Item>
-                <Item {...restField} name={[name, 'filename']} label='File Name' rules={[{ required: true, message: 'File name is required' }]}>
+                <Item 
+                  {...restField} 
+                  name={[name, 'filename']} 
+                  label='File Name' 
+                  rules={[{ required: true, message: 'File name is required' }]}
+                  tooltip={<span>Filename: The exact name of the trait/layer file</span>}
+                >
                   <Input placeholder='File name' />
                 </Item>
+                <DeleteOutlined onClick={() => remove(name)} />
               </Space>
-            )
-          )}
+            </>
+          ))}
           <Form.Item>
             <Button type='dashed' onClick={() => add()} block icon={<PlusOutlined />}>
               {traitNames && traitNames[traitId] ? `Add Variation for ${traitNames[traitId]}` : 'Add Variation'}
