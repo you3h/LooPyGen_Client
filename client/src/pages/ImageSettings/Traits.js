@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Alert, Form, Divider, Select, Space, Input, Button } from 'antd'
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { Alert, Form, Divider, Upload, Select, Space, Input, Button, message } from 'antd'
+import { DeleteOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons'
 
 import useStore from '../../store'
 import { useLoader } from '../../hooks/useLoader'
@@ -94,7 +94,7 @@ const BackgroundLayers = ({ savedColor, changeColor }) => {
   )
 }
 
-const InitTraits = ({ traits, traitNames, setTraitNames }) => {
+const InitTraits = ({ traits, traitNames, setTraitNames, fileList, setFileList }) => {
   if (!traits) return null
 
   const traitsComponent = []
@@ -122,6 +122,8 @@ const InitTraits = ({ traits, traitNames, setTraitNames }) => {
         <Variants 
           traitId={x} 
           traitNames={traitNames}
+          fileList={fileList}
+          setFileList={setFileList}
         />
       </div>
     )  
@@ -130,7 +132,35 @@ const InitTraits = ({ traits, traitNames, setTraitNames }) => {
   return traitsComponent
 }
 
-const Variants = ({ traitId, traitNames = {} }) => {
+const Variants = ({ traitId, traitNames = {}, fileList, setFileList }) => {
+  const traitName = traitNames[traitId]
+
+  const uploadProps = (varId) => ({
+    onRemove: () => {
+      setFileList({
+        ...fileList,
+        [traitName + varId ]: undefined
+      })
+
+    },
+    beforeUpload: file => {
+        if (!traitNames[traitId]) {
+        message.error('Add the trait name first before adding a filename')
+        return false;
+      }
+
+      setFileList({
+        ...fileList,
+        [traitName + varId ]: {
+          files: [file],
+          filename: file.name
+        }
+      })
+      
+      return false;
+    }
+  })
+
   return (
     <Form.List name={`trait-${traitId}-variants`}>
       {(fields, { add, remove }) => (
@@ -170,7 +200,12 @@ const Variants = ({ traitId, traitNames = {} }) => {
                   rules={[{ required: true, message: 'File name is required' }]}
                   tooltip={<span>Filename: The exact name of the trait/layer file</span>}
                 >
-                  <Input placeholder='File name' />
+                  <Upload {...uploadProps(idx+1)} fileList={fileList[traitName+(idx+1)] ? fileList[traitName+(idx+1)].files : []}>
+                    {
+                      !(fileList[traitName+(idx+1)] && fileList[traitName+(idx+1)].filename) &&
+                      <Button icon={<UploadOutlined />}>Select File</Button>
+                    }
+                  </Upload>
                 </Item>
                 <DeleteOutlined onClick={() => remove(name)} />
               </Space>
@@ -190,6 +225,7 @@ const Variants = ({ traitId, traitNames = {} }) => {
 const Traits = ({ form, values }) => {
   const { loader } = useLoader()
   const [traitNames, setTraitNames] = useState({})
+  const [fileList, setFileList] = useState({})
 
   const {
     savedColor,
@@ -218,6 +254,8 @@ const Traits = ({ form, values }) => {
           traits={values && values.numOftraits} 
           traitNames={traitNames} 
           setTraitNames={setTraitNames}
+          fileList={fileList}
+          setFileList={setFileList}
         />
       </Form>
     </div>

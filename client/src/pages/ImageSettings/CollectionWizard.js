@@ -7,6 +7,7 @@ import APIManager from '../../apiClient'
 import { useLoader } from '../../hooks/useLoader'
 import Collection from './Collection'
 import Traits from './Traits'
+import TraitsConfirmation from './TraitsConfirmation'
 
 const { Step } = Steps
 
@@ -37,7 +38,7 @@ const steps = (form, finalValues) => ([
   },
   {
     title: 'Confirm the data',
-    content: <h1>Third Content</h1>,
+    content: <TraitsConfirmation values={finalValues} />,
   },
 ])
 
@@ -53,8 +54,8 @@ const CollectionWizard = () => {
     .then(async (values) => {
       try {
         loader.show()
-        setCurrentStep(currentStep + 1)
         setFinalValues({ ...finalValues, ...values })
+        setCurrentStep(currentStep + 1)
       } catch (err) {
         console.log(err)
         message.error('Something went wrong, Please try again')
@@ -97,7 +98,7 @@ const CollectionWizard = () => {
         <ButtonContainer visib={true}>
         {
           currentStep === steps().length - 1 
-          ? <Button type='primary' onClick={onDone} icon={<SendOutlined />}>Create Traits JSON file</Button>
+          ? <Button type='primary' onClick={onDone} icon={<SendOutlined />}>Confirm & Create Traits JSON file</Button>
           : <Button type='primary' onClick={onNext} icon={<ArrowRightOutlined />}>Next</Button>
         }
         </ButtonContainer>
