@@ -1,0 +1,72 @@
+{
+	"collection_name": "Lazy Loop Cat",
+	"collection_lower": "lazy loop cat",
+	"description": "Lazy Loop Cat Description",
+	"artist_name": "jelocruz",
+	"thumbnails": true,
+	"animation": true,
+	"royalty_percentage": 1,
+	"background_color": true,
+	"royalty_address": "0x000000000000000000000000000d3ad",
+	"image_layers": [
+		{
+			"layer_name": "testbg",
+			"variations": 1,
+			"size": [
+				200,
+				200
+			],
+			"rgba": {
+				"testbg1": [
+					30,
+					8,
+					8,
+					1
+				]
+			},
+			"weights": [
+				4
+			]
+		},
+		{
+			"layer_name": "head",
+			"variations": 2,
+			"filenames": {
+				"head1": "1001.jpg",
+				"head2": "1002.jpg"
+			},
+			"weights": [
+				4,
+				3
+			]
+		},
+		{
+			"layer_name": "torso",
+			"variations": 2,
+			"filenames": {
+				"torso1": "1003.jpg",
+				"torso2": "1004 - Sold (280).jpg"
+			},
+			"weights": [
+				2,
+				2
+			]
+		},
+		{
+			"layer_name": "feet",
+			"variations": 2,
+			"filenames": {
+				"feet1": "1005 - Sold (260).jpg",
+				"feet2": "1006.jpg"
+			},
+			"weights": [
+				3,
+				1
+			]
+		}
+	],
+	"thumbnail_size": [
+		200,
+		200
+	]
+}

@@ -7,15 +7,13 @@ import {
   useNavigate
 } from 'react-router-dom'
 import styled from 'styled-components'
-import { Layout, Tag, Menu } from 'antd'
+import { Layout, Menu } from 'antd'
 import {
   TagOutlined,  
   UserOutlined,
-  CheckOutlined,
   FileImageOutlined
 } from '@ant-design/icons'
 
-import useStore from '../store'
 import {
   Mint,
   MintingConfig,
@@ -26,9 +24,6 @@ import {
 const { Footer, Content, Sider } = Layout
 const { SubMenu } = Menu
 
-const FooterTextContainer = styled.div`
-  display: flex;
-`
 const LogoContainer = styled.div`
   width: 100%;
   height: 50px; 
@@ -38,9 +33,12 @@ const LogoContainer = styled.div`
 `
 const Logo = styled.div`
   color: #fff; 
-  height: 25px; 
+  height: 40px; 
   border-radius: 5px;
   background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: ${props => props.width || '25px'};
 `
 
@@ -68,7 +66,12 @@ const ROUTES = [
 const SiderLogo = ({ collapsed }) => {
   return (
     <LogoContainer>
-      <Logo width={collapsed ? '45px': '175px' }/>
+      <Logo width={collapsed ? '65px': '175px' } >
+        <img alt='logo' src='./logo-ezl2.png' style={{ width: '35px' }} /> 
+        { !collapsed &&
+          <span style={{ color: '#000' }}> - EZL2</span>
+        }
+      </Logo>
     </LogoContainer>
   )
 }
@@ -125,13 +128,7 @@ const MenuList = ({ navigate, location }) => {
 const Home = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const [collapsed, setCollapsed] = useState(false)
-
-  const {
-    user
-  } = useStore(state => ({
-    user: state.user
-  }))
+  const [collapsed, setCollapsed] = useState(true)
 
   return (
     <Layout style={{ height: '100vh' }}>
@@ -149,28 +146,7 @@ const Home = () => {
             <Route path='/' element={<Navigate replace to='/collection-wizard' />} />
           </Routes>
         </Content>
-        <Footer style={{ position: 'sticky', bottom: '0', }}>
-          <FooterTextContainer>
-            <>User:&emsp; {
-              user && user.alias
-                ? <>
-                  <b>{user.alias}</b>&emsp;
-                  {user.apiKey && (
-                    <Tag icon={<CheckOutlined />} color='blue'>
-                      API Key
-                    </Tag>
-                  )}
-                  {user.privateKey && (
-                    <Tag icon={<CheckOutlined />} color='blue'>
-                      Private Key
-                    </Tag>
-                  )}
-                  </>
-                : 'No current user, update settings!'
-              }
-            </>
-          </FooterTextContainer>
-        </Footer>
+        <Footer style={{ position: 'sticky', bottom: '0', }} />
       </Layout>
     </Layout>
   )
