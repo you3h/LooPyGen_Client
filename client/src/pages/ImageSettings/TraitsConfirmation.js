@@ -23,7 +23,7 @@ const TraitsConfirmation = ({ values }) => {
 
   return (
     <div style={{ overflow: 'auto', maxHeight: '70vh', width: '100%' }}>
-      <h2>Pleas confirm the trait details:</h2>
+      <h2>Please confirm the trait details:</h2>
       <pre>{JSON.stringify(confValues, null, '\t') }</pre>
     </div>
   )

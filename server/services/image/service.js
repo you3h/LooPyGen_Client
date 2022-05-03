@@ -1,5 +1,7 @@
-const fs = require('fs')
-const { logger } = require('../../utils')
+
+const path = require('path')
+
+const { logger, writeFile } = require('../../utils')
 const { name, version } = require('../../package.json')
 const { BadRequestError } = require('../../types/errors')
 
@@ -110,15 +112,18 @@ class ImageService {
           : undefined
     }
 
-    fs.writeFile('../common/traits.json', JSON.stringify(parsedBody, null, "\t"), 'utf8', (err) => {
-      if (err) {
-          logger.error('An error occured while writing JSON Object to File.');
-          throw new BadRequestError()
-      }
-    });
-    logger.info(`${SERVICE_NAME}: traits.json created`)
-    return 'Successfully created a json config'
-  }
+    const commonPath = path.resolve('..', 'common', `traits.json`)  
+    
+    try {
+      await writeFile(commonPath, JSON.stringify(parsedBody, null, "\t"))
+      logger.info(`${SERVICE_NAME}: traits.json created`)
+      return 'Successfully created a json config'
+    } catch (err) {
+      console.log(err)
+      logger.error(`${err} - An error occured while writing JSON Object to File.`);
+      throw new BadRequestError()
+    }
+}
 
 }
 

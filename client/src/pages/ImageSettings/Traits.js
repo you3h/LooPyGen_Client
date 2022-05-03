@@ -33,7 +33,7 @@ const CollectionDescription = ({ values }) => {
   )
 }
 
-const BackgroundLayers = ({ savedColor, changeColor }) => {
+const BackgroundLayers = ({ savedColor, setSavedColor, changeColor }) => {
   return (
   <>
     <Divider>Setup Background Colors</Divider>
@@ -76,7 +76,17 @@ const BackgroundLayers = ({ savedColor, changeColor }) => {
                     <PopoverColorPicker color={savedColor[idx]} onChange={(color) => changeColor(color, idx)} />
                   </Item>
                   <DeleteOutlined onClick={() => {
-                    delete savedColor[idx]
+                    const tmpColors = { ...savedColor }
+                    for (let x = idx; x < Object.keys(savedColor).length; x++) {
+                      if (idx === x) {
+                        tmpColors[x] = undefined
+                      } else {
+                        tmpColors[x - 1] = tmpColors[x]
+                        tmpColors[x] = undefined
+                      }
+                    }
+                      
+                    setSavedColor(tmpColors)
                     remove(name)
                   }} />
                 </Space>
@@ -248,7 +258,7 @@ const Traits = ({ form, values }) => {
     <div style={{ width: '100%' }}>
       <CollectionDescription values={values} />
       <Form form={form} autoComplete='off'>
-        { values && values.background && <BackgroundLayers savedColor={savedColor} changeColor={changeColor}/> }
+        { values && values.background && <BackgroundLayers savedColor={savedColor} setSavedColor={setSavedColor} changeColor={changeColor}/> }
         <Divider>Setup Traits</Divider>
         <InitTraits 
           traits={values && values.numOftraits} 

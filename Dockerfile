@@ -20,6 +20,7 @@ COPY ./server .
 FROM node:16
 ARG UID GID
 WORKDIR /usr/src
+RUN mkdir common
 COPY --from=build-deps /usr/src/client/build ./client/build
 COPY --from=build-srv /usr/src/server ./server
 WORKDIR /usr/src/server

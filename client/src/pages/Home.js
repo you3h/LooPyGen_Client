@@ -32,13 +32,9 @@ const LogoContainer = styled.div`
   align-items: center;
 `
 const Logo = styled.div`
-  color: #fff; 
-  height: 40px; 
-  border-radius: 5px;
-  background-color: #fff;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: end;
   width: ${props => props.width || '25px'};
 `
 
@@ -69,7 +65,7 @@ const SiderLogo = ({ collapsed }) => {
       <Logo width={collapsed ? '65px': '175px' } >
         <img alt='logo' src='./logo-ezl2.png' style={{ width: '35px' }} /> 
         { !collapsed &&
-          <span style={{ color: '#000' }}> - EZL2</span>
+          <span style={{ color: '#fff', fontWeight: 'bold', fontSize: '22px' }}> &nbsp; EZL2</span>
         }
       </Logo>
     </LogoContainer>
