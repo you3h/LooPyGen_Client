@@ -11,7 +11,7 @@ const imageRouter = require('../services/image/router')
 
 const { version } = require('../package.json')
 
-const port = API_PORT || 8000
+const port = API_PORT || 8080
 
 // * express app settings
 const expressSettings = {

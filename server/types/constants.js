@@ -1,5 +1,5 @@
 const SERVER_NAME = '[LOOPMINTER_API]'
-const API_PORT = 8000
+const API_PORT = 8080
 
 const NFT_BASE_URL = 'https://api3.loopring.io/api/v3'
 
