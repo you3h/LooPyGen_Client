@@ -23,6 +23,6 @@ WORKDIR /usr/src
 COPY --from=build-deps /usr/src/client/build ./client/build
 COPY --from=build-srv /usr/src/server ./server
 WORKDIR /usr/src/server
-RUN chown -R $UID:$GID /usr/src
+RUN chown -R ${UID-root}:${GID-root} /usr/src
 
 CMD npm start
