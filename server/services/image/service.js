@@ -100,7 +100,7 @@ class ImageService {
 
     const sanitizedName = collection_name
       .toLowerCase()
-      .replace(/[^A-Za-z0-9]/g, '')
+      .replace(/[^A-Za-z0-9 ]/g, '')
       .split(' ')
       .join('_')
 
