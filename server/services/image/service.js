@@ -1,5 +1,6 @@
 
 const path = require('path')
+const mkdirp = require('mkdirp')
 
 const { logger, writeFile } = require('../../utils')
 const { name, version } = require('../../package.json')
@@ -52,7 +53,14 @@ class ImageService {
 
     if (background) {
       backgrounds.forEach(background => {
-        rgba[background.name] = Object.keys(background.color).map(obj => background.color[obj])
+        rgba[background.name] = Object.keys(background.color).map((obj, idx) => {
+
+          if (idx === 3) {
+            return Math.floor(background.color[obj] * 255)
+          }
+          
+          return background.color[obj]
+        })
         weights.push(parseInt(background.rarity))
       })
 
@@ -90,9 +98,15 @@ class ImageService {
       })
     }
 
+    const sanitizedName = collection_name
+      .toLowerCase()
+      .replace(/[^A-Za-z0-9]/g, '')
+      .split(' ')
+      .join('_')
+
     const parsedBody = {
       collection_name,
-      collection_lower: collection_name.toLowerCase(),
+      collection_lower: sanitizedName,
       description,
       artist_name,
       thumbnails,
@@ -112,10 +126,12 @@ class ImageService {
           : undefined
     }
 
-    const commonPath = path.resolve('..', 'common', `traits.json`)  
+    const commonPath = path.resolve('..', 'common', 'collections', sanitizedName, 'config')
+    const traitsPath =  path.resolve('..', 'common', 'collections', sanitizedName, 'config', 'traits.json')
     
     try {
-      await writeFile(commonPath, JSON.stringify(parsedBody, null, "\t"))
+      await mkdirp(commonPath)
+      await writeFile(traitsPath, JSON.stringify(parsedBody, null, '\t'))
       logger.info(`${SERVICE_NAME}: traits.json created`)
       return 'Successfully created a json config'
     } catch (err) {
